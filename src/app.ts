@@ -9,7 +9,17 @@ function showHello(divName: string, name: string) {
 
 enum Category { JavaScript, CSS, HTML, TypeScript, Anguar };
 
-function getAllBooks(): readonly object[] { //сделать массив константой, привели к типу const
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  available: boolean;
+  category: Category;
+  pages?: number;
+  markDamage?: (reason: string) => void;
+}
+
+function getAllBooks(): readonly Book[] { //сделать массив константой, привели к типу const
   const books = <const>[
     { id: 1, title: 'Refactoring JavaScript', author: 'Evan Burchard', available: true, category: Category.JavaScript },
     { id: 2, title: 'JavaScript Testing', author: 'Liang Yuxian Eugene', available: false, category: Category.JavaScript },
@@ -81,7 +91,7 @@ function calcTotalPages(): bigint {
 
 // getAllBooks().forEach(title => console.log(title));
 
-function getBookByID(id: number): any {
+function getBookByID(id: number): Book | undefined { //так как find может вернуть undefined
   const elem = getAllBooks().find((item: any) => item.id === id);
 
   return elem;
@@ -169,4 +179,21 @@ function getTitles(...args: any[]): string[] {
 }
 
 const checkedOutBooks = getTitles(false);
-console.log(checkedOutBooks);
+// console.log(checkedOutBooks);
+
+function printBook(book: Book): void {
+  console.log(`${book.title} by ${book.author}`);
+}
+
+const myBook: Book = {
+  id: 5,
+  title: 'Colors, Backgrounds, and Gradients',
+  author: 'Eric A. Meyer',
+  available: true,
+  category: Category.CSS,
+  pages: 200,
+  markDamage: (reason: string) => console.log(`ffff: ${reason}`)
+};
+
+printBook(myBook);
+myBook.markDamage('missing back cover');
